@@ -49,6 +49,7 @@ void decode(Baby *baby, int *opcode, int *line) {
 }
 
 int execute(Baby *baby, unsigned int opcode, unsigned int line) {
+    //assert(condition && errorMessage) simply crashes with the error message if the condition is false. It's a nice debugging tool
     assert(opcode < 8 && "Opcode out of range");
     assert(line < 32 && "Line out of range");
     
