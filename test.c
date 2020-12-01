@@ -42,9 +42,6 @@ int main() {
     }
     fclose(program);
 
-    printf("num1: %d\n", baby.store[7]);
-    printf("num2: %d\n", baby.store[8]);
-
     int running = 1;
     while(running) {
         fetch(&baby);
@@ -54,8 +51,6 @@ int main() {
         print(&baby);
         printf("\n--------------------------------------------------------------------------------\n\n");
     }
-
-    printf("result: %d\n", baby.store[9]);
 
     return 0;
 }

@@ -1,9 +1,10 @@
 #include <stdint.h>
+#undef NDEBUG
 #include <assert.h>
 #include <stdio.h>
 #include "manchester_baby.h"
 
-//#define DEBUG
+#define DEBUG
 
 /*
     ON ENDIANNESS:
@@ -39,7 +40,7 @@ void fetch(Baby *baby) {
 
 void decode(Baby *baby, int *opcode, int *line) {
     *line = baby->present_instruction & 63; //63 = 0b11111
-    *opcode = (baby->present_instruction >> 13) & 7; //Move bits so that bit 15 is the last one, then drop all bits which aren't the last 3 (7 = 0b111)
+    *opcode = (baby->present_instruction >> 13) & 15; //Move bits so that bit 15 is the last one, then drop all bits which aren't the last 4 (15 = 0b1111)
 
     #ifdef DEBUG
         printf("decode: decoding ");
@@ -51,7 +52,7 @@ void decode(Baby *baby, int *opcode, int *line) {
 
 int execute(Baby *baby, unsigned int opcode, unsigned int line) {
     //assert(condition && errorMessage) simply crashes with the error message if the condition is false. It's a nice debugging tool
-    assert(opcode < 8 && "Opcode out of range");
+    assert(opcode <= 10 && "Opcode out of range");
     assert(line < LINE_COUNT && "Line out of range");
     
     #ifdef DEBUG
@@ -80,6 +81,15 @@ int execute(Baby *baby, unsigned int opcode, unsigned int line) {
             break;
         case 7: //STP
             return STOP;
+        case 8: //LDA 
+            baby->accumulator = baby->store[line];
+            break;
+        case 9: //STN
+            baby->store[line] = negate(baby->accumulator);
+            break;
+        case 10: //ADD
+            baby->accumulator += baby->store[line];
+            break;
     }
 
     return CONTINUE;
@@ -107,6 +117,7 @@ void print(Baby *baby) {
 static void print_line(uint32_t line) {
     for(int i = 0; i < 32; ++i) {
         printf("%d", (line & 1 << i) >> i);
+        if(i == 4 || i == 12 || i == 16) printf("_");
     }
 }
 
