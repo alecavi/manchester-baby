@@ -18,12 +18,13 @@
 
     We _could_ pretend we can, but we'd have to invert the bit order again to perform arithmetics or display output. That seems horribly wasteful.
 
-    Because of that, I decided to write the code below ignoring bit ordering. C provides a nice model where, when using unsigned integers, you can pretend you're working in
+    Because of that, We decided to write the code below ignoring bit ordering. C provides a nice model where, when using unsigned integers, you can pretend you're working in
     LSbyte first, LSbit first and C will take care of the details for you.
 
-    Of course, we'll need to handle bit ordering _somewhere_. I decided to handle it in input/output: when reading from input, the first bit of a line will actually be stored in the
+    Of course, we'll need to handle bit ordering _somewhere_. We decided to handle it in input/output: when reading from input, the first bit of a line will actually be stored in the
     last bit of the line, and when printing output, the first bit of a line will be displayed last.
 */
+
 static void print_line(uint32_t line);
 
 void fetch(Baby *baby) {
