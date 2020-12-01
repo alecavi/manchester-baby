@@ -51,7 +51,7 @@ void decode(Baby *baby, int *opcode, int *line) {
 int execute(Baby *baby, unsigned int opcode, unsigned int line) {
     //assert(condition && errorMessage) simply crashes with the error message if the condition is false. It's a nice debugging tool
     assert(opcode < 8 && "Opcode out of range");
-    assert(line < 32 && "Line out of range");
+    assert(line < LINE_COUNT && "Line out of range");
     
     #ifdef DEBUG
         printf("Executing opcode %d on line %d\n", opcode, line);
@@ -86,7 +86,7 @@ int execute(Baby *baby, unsigned int opcode, unsigned int line) {
 
 void print(Baby *baby) {
     printf("store:\n");
-    for(int i = 0; i < 32; ++i) {
+    for(int i = 0; i < LINE_COUNT; ++i) {
         if(i < 10) printf("%d:  ", i); //Two spaces
         else printf("%d: ", i); //One space  
         print_line(baby->store[i]);
@@ -102,6 +102,7 @@ void print(Baby *baby) {
     printf("\n");
 }
 
+//A static function is only visible to the file it's defined in.
 static void print_line(uint32_t line) {
     for(int i = 0; i < 32; ++i) {
         printf("%d", (line & 1 << i) >> i);

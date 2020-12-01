@@ -3,9 +3,10 @@
 #define STOP 0;
 #define CONTINUE 1;
 #define LINE_HIGHEST_BIT (1 << 31)
+#define LINE_COUNT 16
 
 typedef struct Baby {
-    uint32_t store[32];
+    uint32_t store[LINE_COUNT];
     uint32_t accumulator;
     uint32_t current_instruction;
     uint32_t present_instruction;

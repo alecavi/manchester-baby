@@ -42,8 +42,8 @@ int main() {
     }
     fclose(program);
 
-    print(&baby);
-    printf("\n");
+    printf("num1: %d\n", baby.store[7]);
+    printf("num2: %d\n", baby.store[8]);
 
     int running = 1;
     while(running) {
@@ -52,9 +52,10 @@ int main() {
         decode(&baby, &opcode, &line);
         running = execute(&baby, opcode, line);
         print(&baby);
-        printf("\n");
-        getchar();
+        printf("\n--------------------------------------------------------------------------------\n\n");
     }
+
+    printf("result: %d\n", baby.store[9]);
 
     return 0;
 }
