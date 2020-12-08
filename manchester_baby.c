@@ -39,7 +39,7 @@ void fetch(Baby *baby) {
 }
 
 void decode(Baby *baby, int *opcode, int *line) {
-    *line = baby->present_instruction & 63; //63 = 0b11111
+    *line = baby->present_instruction & 31; //63 = 0b11111
     *opcode = (baby->present_instruction >> 13) & 15; //Move bits so that bit 15 is the last one, then drop all bits which aren't the last 4 (15 = 0b1111)
 
     #ifdef DEBUG
