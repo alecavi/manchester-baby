@@ -10,7 +10,7 @@ int main() {
     baby.current_instruction = 0;
     baby.present_instruction = 0;
 
-    FILE *program = fopen("program_new_opcodes.txt", "r");
+    FILE *program = fopen("program_with_new_features.txt", "r");
     if(program == NULL) {
         fprintf(stderr, "ERROR: Program file not found\n");
         return 1;
