@@ -3,7 +3,7 @@
 #define STOP 0;
 #define CONTINUE 1;
 #define LINE_HIGHEST_BIT (1 << 31)
-#define LINE_COUNT 16
+#define LINE_COUNT 32
 
 typedef struct Baby {
     uint32_t store[LINE_COUNT];

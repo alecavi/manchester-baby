@@ -22,6 +22,8 @@
 */
 
 static void print_line(uint32_t line);
+static uint32_t line_bits();
+static int line_bit_count();
 
 void fetch(Baby *baby) {
     baby->current_instruction += 1;
@@ -34,7 +36,7 @@ void fetch(Baby *baby) {
 }
 
 void decode(Baby *baby, int *opcode, int *line, int *addressing) {
-    *line = baby->present_instruction & 31; //63 = 0b11111
+    *line = baby->present_instruction & line_bits();
     *opcode = (baby->present_instruction >> 13) & 15; //Move bits so that bit 15 is the last one, then drop all bits which aren't the last 4 (15 = 0b1111)	
 	*addressing = baby->present_instruction >> 31;
 
@@ -50,7 +52,7 @@ int execute(Baby *baby, unsigned int opcode, unsigned int line, unsigned int add
     //assert(condition && errorMessage) simply crashes with the error message if the condition is false. It's a nice debugging tool
     assert(opcode <= 10 && "Opcode out of range");
     assert(line < LINE_COUNT && "Line out of range");
-	assert(addressing <= 1&& "Addressing out of range");
+	assert(addressing <= 1 && "Addressing out of range");
 
 	uint32_t data;
 	if(addressing == 0) {
@@ -127,10 +129,30 @@ void print(Baby *baby) {
 static void print_line(uint32_t line) {
     for(int i = 0; i < 32; ++i) {
         printf("%d", (line & 1 << i) >> i);
-        if(i == 4 || i == 12 || i == 16) printf("_");
+        if(i == line_bit_count() || i == 12 || i == 16) printf("_");
     }
 }
 
+//Computes the bitmask to yield only the correct amount of bits for the line count.
+//Also works with non-power-of-2 line counts
+//Will probably get constant-folded by the compiler (aka replaced with its result at compile time)
+static uint32_t line_bits() {
+    uint32_t out = 0;
+    for(int i = 1; i <= LINE_COUNT; i <<= 1) {
+        out |= i;
+    }
+    return out;
+}
+
+//Computes the length of the bit sequence necessary to store the bits of a line.
+//Also works with non-power-of-2 line counts
+static int line_bit_count() {
+    int out = 0;
+    for(int i = LINE_COUNT; i > 2; i >>= 1) {
+        out++;
+    }
+    return out;
+}
 
 //Two's complement negation
 //When input is 0, ~input is the bit pattern of all 1s, which overflows when 1 is added to it. Since we're using unsigned integers, overflow is defined to wrap around, so the result is the bit pattern of all 0s.
