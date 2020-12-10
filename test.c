@@ -10,7 +10,7 @@ int main() {
     baby.current_instruction = 0;
     baby.present_instruction = 0;
 
-    FILE *program = fopen("program.txt", "r");
+    FILE *program = fopen("program_new_opcodes.txt", "r");
     if(program == NULL) {
         fprintf(stderr, "ERROR: Program file not found\n");
         return 1;
@@ -45,12 +45,15 @@ int main() {
     int running = 1;
     while(running) {
         fetch(&baby);
-        int opcode, line;
-        decode(&baby, &opcode, &line);
-        running = execute(&baby, opcode, line);
+        int opcode, line, addressing;
+
+        decode(&baby, &opcode, &line, &addressing);
+        running = execute(&baby, opcode, line, addressing);
         print(&baby);
         printf("\n--------------------------------------------------------------------------------\n\n");
     }
 
     return 0;
 }
+
+

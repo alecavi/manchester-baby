@@ -13,7 +13,7 @@ typedef struct Baby {
 } Baby;
 
 void fetch(Baby *baby);
-void decode(Baby *baby, int *opcode, int *line);
-int execute(Baby *baby, unsigned int opcode, unsigned int line);
+void decode(Baby *baby, int *opcode, int *line, int *addressing);
+int execute(Baby *baby, unsigned int opcode, unsigned int line, unsigned int addressing);
 void print(Baby *baby);
 uint32_t negate(uint32_t input);
